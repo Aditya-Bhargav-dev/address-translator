@@ -42,7 +42,7 @@ document.getElementById("pageSize").addEventListener("input", (e) => {
 
     var virtualIndex = document.createElement("td");
     var virtualIndexValue = (i >>> 0).toString(2).padStart(numBits, '0'); // Convert decimal to binary with 3 digits
-    console.log(virtualIndexValue)
+   
     virtualIndex.id="vir"+i;
     virtualIndex.appendChild(document.createTextNode(virtualIndexValue));
     row.appendChild(virtualIndex);
@@ -75,6 +75,7 @@ document.getElementById("pageSize").addEventListener("input", (e) => {
     const presentBitCheckbox = document.getElementById("pres" + i);
     presentBitCheckbox.addEventListener("change", (e) => {
       const isChecked = e.target.checked;
+      document.getElementById("pres" + i).value = isChecked;
       const physicalIndexInput = document.getElementById("phys" + i);
 
       // Enable or disable the physical index input based on the present bit status
@@ -84,7 +85,7 @@ document.getElementById("pageSize").addEventListener("input", (e) => {
 
 });
 
-function mappingData()
+function mappingData(method='t')
 {
     var cols = [];
     var virIndex = [];
@@ -93,17 +94,30 @@ function mappingData()
     $('thead th').each(function(){
         cols.push($(this).text().toLowerCase());
     });
-    console.log($('tbody tr').length)
+    
     for (let index = 0; index <  $('tbody tr').length; index++) {
         virIndex.push(document.getElementById("vir"+index).innerHTML);
         pageIndex.push(document.getElementById("phys"+index).value);
         presentbit.push(document.getElementById("pres"+index).value);        
     }
 
-    if(pageIndex.length>virIndex.length/2)
+    var numOfTrue = presentbit.filter(x => x === true).length;
+    if(method=="validate")
     {
-      alert("Physical Index should be: "+virIndex.length/2)
-    }
+      if(numOfTrue>pageIndex.length/2)
+      {
+        alert("Physical Index should be: "+virIndex.length/2);
+        document.getElementById("taberror").hidden=false;
+        document.getElementById("binaryConversion").hidden=true;
+      }
+      else
+      {      
+      document.getElementById("taberror").hidden=true;
+      
+      alert("Page Table Looks good go ahead with Conversion");
+      document.getElementById("binaryConversion").hidden=false;
+      }
+  }
     return {virIndex,pageIndex,presentbit}
 }
 
@@ -157,18 +171,26 @@ function convertToPhysical()
     let input = document.getElementById("vir").value;
     let binary = converttoBinary(input);
     document.getElementById("virtobin").innerHTML= "Binary Conversion-------> " + binary;
-    console.log(binary);
+    
 
     ({virIndex,pageIndex,presentbit} = mappingData());
 
     let index = virIndex.indexOf(binary.slice(0,3));
-    console.log(index);
+    
 
+    if(index==-1 || pageIndex[index]!=true)
+    {    
+      
+      document.getElementById("vrerror").hidden=false;
+      document.getElementById("virtophy").innerHTML="";
+      return;
+    }
+    document.getElementById("vrerror").hidden=true;
     let virtual = pageIndex[index]+binary.slice(3);
-    console.log(virtual);
+   
 
     let result = converttoString(virtual);
-    console.log(result);
+
     document.getElementById("virtophy").innerHTML= "Physical Address-------> " + result ;
 
 }
@@ -178,23 +200,33 @@ function convertToVirtual()
   let input = document.getElementById("phy").value;
   let binary = converttoBinary(input);
   document.getElementById("phytobin").innerHTML= "Binary Conversion-------> " + binary ;
-  console.log(binary);
+  
 
   ({virIndex,pageIndex,presentbit} = mappingData());
 
   let index = pageIndex.indexOf(binary.slice(1,3));
-  console.log(index);
+
+  if(index==-1)
+  {    
+    document.getElementById("pherror").hidden=false;
+    document.getElementById("phytovir").innerHTML= "";
+    return;
+  }
+  
+  document.getElementById("pherror").hidden=true;
+  
 
   let virtual = virIndex[index]+binary.slice(3);
-  console.log(virtual);
+  
 
   let result = converttoString(virtual);
-  console.log(result);
+  
   document.getElementById("phytovir").innerHTML= "Virtual Address-------> " + result;
 
 }
 
 function validateTable()
 {
-  ({virIndex,pageIndex,presentbit} = mappingData());
+  ({virIndex,pageIndex,presentbit} = mappingData("validate"));  
+
 }
