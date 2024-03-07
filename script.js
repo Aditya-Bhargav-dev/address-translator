@@ -178,7 +178,7 @@ function convertToPhysical()
     let index = virIndex.indexOf(binary.slice(0,3));
     
 
-    if(index==-1 || pageIndex[index]!=true)
+    if(index==-1 || pageIndex[index]=="")
     {    
       
       document.getElementById("vrerror").hidden=false;
