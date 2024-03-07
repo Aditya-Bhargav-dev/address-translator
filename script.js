@@ -169,6 +169,7 @@ function converttoString(input)
 function convertToPhysical()
 {
     let input = document.getElementById("vir").value;
+    input=input.toUpperCase();
     let binary = converttoBinary(input);
     document.getElementById("virtobin").innerHTML= "Binary Conversion-------> " + binary;
     
@@ -198,6 +199,7 @@ function convertToPhysical()
 function convertToVirtual()
 {
   let input = document.getElementById("phy").value;
+  input=input.toUpperCase();
   let binary = converttoBinary(input);
   document.getElementById("phytobin").innerHTML= "Binary Conversion-------> " + binary ;
   
