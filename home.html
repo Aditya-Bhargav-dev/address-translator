@@ -70,12 +70,12 @@
       <button onclick="validateTable()" class="btn btn-primary">
         Validate Table
       </button>
-      <p id="error" style="color: brown">Please enter valid physical indexes</p>
+      <p id="taberror" style="color: brown">Please enter valid physical indexes</p>
     </div>
   </div>
     <br>
     <div class="container">
-      <div id="binaryConversion" class="row">
+      <div id="binaryConversion" class="row" hidden>
         <div class="col">
           <label for="vir" class="form-label">Convert Virtual to Physical:</label>
           <input type="text" id="vir" class="form-control" /> <br>
@@ -83,6 +83,7 @@
             Convert
           </button>
           <br>
+          <p id="vrerror" style="color: brown" hidden>No physical address for given virtual address</p>
           <p id="virtobin"></p>
           <p id="virtophy"></p>
         </div>
@@ -92,6 +93,7 @@
           <button onclick="convertToVirtual()" class="btn btn-primary">
             Convert
           </button> <br>
+          <p id="pherror" style="color: brown" hidden>Invalid Physical address. Cannot reverse translate</p>
           <p id="phytobin"></p>
           <p id="phytovir"></p>
         </div>
