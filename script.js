@@ -104,7 +104,7 @@ function mappingData(method='t')
     var numOfTrue = presentbit.filter(x => x === true).length;
     if(method=="validate")
     {
-      if(numOfTrue>pageIndex.length/2)
+      if(numOfTrue ==0 || numOfTrue>pageIndex.length/2)
       {
         alert("Physical Index should be: "+virIndex.length/2);
         document.getElementById("taberror").hidden=false;
