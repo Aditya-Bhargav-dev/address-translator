@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Table Translation</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+  </head>
+  <body>
+    <br>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <label for="virtualSpace" class="form-label">Virtual Space:</label>
+          <input
+            type="number"
+            id="virtualSpace"
+            class="form-control"
+          />
+        </div>
+        <div class="col">
+          <label for="physicalSpace" class="form-label">Physical Space:</label
+          >
+          <input
+            type="number"
+            id="physicalSpace"
+            class="form-control"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="pageSize" class="form-label">Page Size:</label>
+          <input
+            type="number"
+            id="pageSize"
+            class="form-control"
+            hidden
+          />
+          <p id="error" style="color: brown">Please enter valid virtual space/page size</p>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div  class="container"> 
+      Page Table:
+      <br></br>
+    <div class="containertbl">
+      <br>
+          <table id="pageTable" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Virtual Index (Binary)</th>
+                <th>Physical Index</th>
+                <th>Present Bit</th>
+              </tr>
+            </thead>
+            <tbody id="pageTableBody"></tbody>
+          </table>
+    </div>
+    <br>
+    <div>
+      <button onclick="validateTable()" class="btn btn-primary">
+        Validate Table
+      </button>
+      <p id="error" style="color: brown">Please enter valid physical indexes</p>
+    </div>
+  </div>
+    <br>
+    <div class="container">
+      <div id="binaryConversion" class="row">
+        <div class="col">
+          <label for="vir" class="form-label">Convert Virtual to Physical:</label>
+          <input type="text" id="vir" class="form-control" /> <br>
+          <button onclick="convertToPhysical()" class="btn btn-primary">
+            Convert
+          </button>
+          <br>
+          <p id="virtobin"></p>
+          <p id="virtophy"></p>
+        </div>
+        <div class="col">
+          <label for="phy" class="form-label">Convert Physical to Virtual:</label>
+          <input type="text" id="phy" class="form-control" /> <br>
+          <button onclick="convertToVirtual()" class="btn btn-primary">
+            Convert
+          </button> <br>
+          <p id="phytobin"></p>
+          <p id="phytovir"></p>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

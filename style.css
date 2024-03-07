@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    width: auto;
+}
+
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(93, 77, 77, 0.1);
+  
+}
+.containertbl {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(93, 77, 77, 0.1);
+    display: flex;
+    justify-content: center;
+  
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 50%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.table {
+    width: 60%;
+    align-self: center;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table, .th, .td {
+    border: 1px solid #ddd;
+}
+
+.th, .td {
+    padding: 10px;
+    text-align: center;
+}
+
+h1, h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.container-fluid {
+    padding: 50px 20px;
+}
+
+
+.btn-primary {
+    background-color: #299130;
+    border-color: #4bc653;
+}
+
+.btn-primary:hover {
+    background-color: #40ae2f;
+    border-color: #0056b3;
+}
+
+#pageTableContainer {
+    margin-top: 20px;
+  }
+  #binaryConversion {
+    margin-top: 20px;
+  }
