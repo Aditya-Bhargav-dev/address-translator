@@ -33,6 +33,7 @@ document.getElementById("pageSize").addEventListener("input", (e) => {
           }
       }
 
+  localStorage.setItem("numBits",numBits);
 
   var pageTableBody = document.getElementById("pageTableBody");
   
@@ -49,6 +50,7 @@ document.getElementById("pageSize").addEventListener("input", (e) => {
 
     var physicalIndex = document.createElement("td");
     let physicalIndexInput = document.createElement("input");
+    physicalIndexInput.type="number"
     physicalIndexInput.id = "phys"+i;
     physicalIndexInput.disabled = true;
     physicalIndex.appendChild(physicalIndexInput);
@@ -63,11 +65,6 @@ document.getElementById("pageSize").addEventListener("input", (e) => {
     
     pageTableBody.appendChild(row);
 
-  // Add event listener to physical index input
-  physicalIndexInput.addEventListener("input", (e) => {
-  const enteredValue = physicalIndexInput.value;
-
-  });
   }
 
   // Add event listener to present bit checkboxes
@@ -80,12 +77,16 @@ document.getElementById("pageSize").addEventListener("input", (e) => {
 
       // Enable or disable the physical index input based on the present bit status
       physicalIndexInput.disabled = !isChecked;
+      if(!isChecked)
+      {
+        physicalIndexInput.value="";
+      }
     });
   }
 
 });
 
-function mappingData(method='t')
+function mappingData()
 {
     var cols = [];
     var virIndex = [];
@@ -101,23 +102,6 @@ function mappingData(method='t')
         presentbit.push(document.getElementById("pres"+index).value);        
     }
 
-    var numOfTrue = presentbit.filter(x => x === true).length;
-    if(method=="validate")
-    {
-      if(numOfTrue ==0 || numOfTrue>pageIndex.length/2)
-      {
-        alert("Physical Index should be: "+virIndex.length/2);
-        document.getElementById("taberror").hidden=false;
-        document.getElementById("binaryConversion").hidden=true;
-      }
-      else
-      {      
-      document.getElementById("taberror").hidden=true;
-      
-      alert("Page Table Looks good go ahead with Conversion");
-      document.getElementById("binaryConversion").hidden=false;
-      }
-  }
     return {virIndex,pageIndex,presentbit}
 }
 
@@ -176,7 +160,9 @@ function convertToPhysical()
 
     ({virIndex,pageIndex,presentbit} = mappingData());
 
-    let index = virIndex.indexOf(binary.slice(0,3));
+    let range = localStorage.getItem("numBits");
+
+    let index = virIndex.indexOf(binary.slice(0,range));
     
 
     if(index==-1 || pageIndex[index]=="")
@@ -187,7 +173,7 @@ function convertToPhysical()
       return;
     }
     document.getElementById("vrerror").hidden=true;
-    let virtual = pageIndex[index]+binary.slice(3);
+    let virtual = pageIndex[index]+binary.slice(range);
    
 
     let result = converttoString(virtual);
@@ -204,9 +190,10 @@ function convertToVirtual()
   document.getElementById("phytobin").innerHTML= "Binary Conversion-------> " + binary ;
   
 
+  let range = localStorage.getItem("numBits");
   ({virIndex,pageIndex,presentbit} = mappingData());
 
-  let index = pageIndex.indexOf(binary.slice(1,3));
+  let index = pageIndex.indexOf(binary.slice(1,range));
 
   if(index==-1)
   {    
@@ -218,7 +205,7 @@ function convertToVirtual()
   document.getElementById("pherror").hidden=true;
   
 
-  let virtual = virIndex[index]+binary.slice(3);
+  let virtual = virIndex[index]+binary.slice(range);
   
 
   let result = converttoString(virtual);
@@ -229,6 +216,42 @@ function convertToVirtual()
 
 function validateTable()
 {
-  ({virIndex,pageIndex,presentbit} = mappingData("validate"));  
+  ({virIndex,pageIndex,presentbit} = mappingData()); 
+  
+  var numOfTrue = presentbit.filter(x => x === true).length;
+  const duplicates = pageIndex.filter((item, index) => pageIndex.indexOf(item) !== index && item!=""); 
+  
+
+  let pageIndexNumbers = []
+  pageIndex.forEach(element => {
+    pageIndexNumbers.push(converttoString(element))
+  });
+  
+  if(numOfTrue ==0 || numOfTrue>pageIndex.length/2)
+  {
+      alert("No of Physical Index values should be: "+virIndex.length/2);
+      document.getElementById("taberror").hidden=false;
+      document.getElementById("binaryConversion").hidden=true;
+  }
+  else if(duplicates.length>0)
+  {
+    alert("Physical Index has duplicates, please correct");
+    document.getElementById("taberror").hidden=false;
+    document.getElementById("binaryConversion").hidden=true;
+  }
+  else if(pageIndexNumbers.some(el => el > virIndex.length/2 - 1))
+  {
+    alert("Physical Index should be from range 0 to "+virIndex.length/2);
+    document.getElementById("taberror").hidden=false;
+    document.getElementById("binaryConversion").hidden=true;
+
+  }
+  else
+  {      
+  document.getElementById("taberror").hidden=true;
+  alert("Page Table Looks good go ahead with Conversion");
+  document.getElementById("binaryConversion").hidden=false;
+  }
+ 
 
 }
