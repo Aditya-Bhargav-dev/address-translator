@@ -113,6 +113,10 @@ let binaryResult = '';
 
 for (const char of input) { 
   let codePoint = char.codePointAt(0); 
+  if(codePoint>70)
+  {
+    return "No Binary conversion"
+  }
   if(codePoint>64)
   {
      codePoint = codePoint - 55;
@@ -155,6 +159,8 @@ function convertToPhysical()
     let input = document.getElementById("vir").value;
     input=input.toUpperCase();
     let binary = converttoBinary(input);
+
+    
     document.getElementById("virtobin").innerHTML= "Binary Conversion-------> " + binary;
     
 
@@ -247,7 +253,7 @@ function validateTable()
     document.getElementById("binaryConversion").hidden=true;
 
   }
-  else if(pageIndex.some(el => el == ""))
+  else if(pageIndex.some(el => el == "") && pageIndex.some(el => el == "").length>virIndex.length/2 )
   {
     alert("Physical data values or incomplete or missing");
     document.getElementById("taberror").hidden=false;
