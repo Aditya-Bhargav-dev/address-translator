@@ -226,8 +226,9 @@ function validateTable()
   pageIndex.forEach(element => {
     pageIndexNumbers.push(converttoString(element))
   });
-  
-  if(numOfTrue ==0 || numOfTrue>pageIndex.length/2)
+   
+
+  if(numOfTrue ==0 || numOfTrue!=virIndex.length/2)
   {
       alert("No of Physical Index values should be: "+virIndex.length/2);
       document.getElementById("taberror").hidden=false;
@@ -245,6 +246,12 @@ function validateTable()
     document.getElementById("taberror").hidden=false;
     document.getElementById("binaryConversion").hidden=true;
 
+  }
+  else if(pageIndex.some(el => el == ""))
+  {
+    alert("Physical data values or incomplete or missing");
+    document.getElementById("taberror").hidden=false;
+    document.getElementById("binaryConversion").hidden=true;
   }
   else
   {      
